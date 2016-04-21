@@ -16,12 +16,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.storm.task.TopologyContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import acromusashi.stream.entity.StreamMessage;
 import acromusashi.stream.entity.StreamMessageHeader;
-import backtype.storm.task.TopologyContext;
 
 /**
  * 受信したMessageの内容をログ出力するBolt

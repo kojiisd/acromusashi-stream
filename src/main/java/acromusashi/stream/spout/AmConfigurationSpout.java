@@ -14,9 +14,10 @@ package acromusashi.stream.spout;
 
 import java.util.Map;
 
-import backtype.storm.spout.SpoutOutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.base.BaseRichSpout;
+import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.base.BaseRichSpout;
+
 
 /**
  * BaseSpout, this class has the following values ​​in the field.

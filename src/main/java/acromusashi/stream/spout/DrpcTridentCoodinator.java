@@ -14,10 +14,10 @@ package acromusashi.stream.spout;
 
 import java.text.MessageFormat;
 
+import org.apache.storm.trident.spout.ITridentSpout.BatchCoordinator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import storm.trident.spout.ITridentSpout.BatchCoordinator;
 
 /**
  * DRPCリクエストを受信してTridentの処理を開始するSpout用のCoodinatorクラス

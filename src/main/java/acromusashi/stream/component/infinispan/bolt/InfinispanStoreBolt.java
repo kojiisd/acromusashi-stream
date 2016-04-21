@@ -15,6 +15,7 @@ package acromusashi.stream.component.infinispan.bolt;
 import java.text.MessageFormat;
 import java.util.Map;
 
+import org.apache.storm.task.TopologyContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,6 @@ import acromusashi.stream.component.infinispan.CacheHelper;
 import acromusashi.stream.component.infinispan.TupleCacheMapper;
 import acromusashi.stream.entity.StreamMessage;
 import acromusashi.stream.exception.ConvertFailException;
-import backtype.storm.task.TopologyContext;
 
 /**
  * InfinispanにTupleの内容を保存するBolt

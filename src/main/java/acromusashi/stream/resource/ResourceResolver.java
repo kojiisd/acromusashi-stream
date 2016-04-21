@@ -19,8 +19,8 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.storm.shade.org.apache.commons.io.FileUtils;
 
 /**
  * Resource path resolve utility class.

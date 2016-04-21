@@ -14,15 +14,15 @@ package acromusashi.stream.topology;
 
 import java.text.MessageFormat;
 
+import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.StormSubmitter;
+import org.apache.storm.generated.AlreadyAliveException;
+import org.apache.storm.generated.AuthorizationException;
+import org.apache.storm.generated.InvalidTopologyException;
+import org.apache.storm.topology.TopologyBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import backtype.storm.Config;
-import backtype.storm.LocalCluster;
-import backtype.storm.StormSubmitter;
-import backtype.storm.generated.AlreadyAliveException;
-import backtype.storm.generated.InvalidTopologyException;
-import backtype.storm.topology.TopologyBuilder;
 
 /**
  * Topologyを実装する際の基底クラス
@@ -116,6 +116,12 @@ public abstract class BaseTopology
                 logger.error(logMessage, ex);
             }
             catch (InvalidTopologyException ex)
+            {
+                String logFormat = "Occur exception at Topology Submit. Skip Topology Submit. : TopologyName={0}";
+                String logMessage = MessageFormat.format(logFormat, getTopologyName());
+                logger.error(logMessage, ex);
+            }
+            catch (AuthorizationException ex)
             {
                 String logFormat = "Occur exception at Topology Submit. Skip Topology Submit. : TopologyName={0}";
                 String logMessage = MessageFormat.format(logFormat, getTopologyName());

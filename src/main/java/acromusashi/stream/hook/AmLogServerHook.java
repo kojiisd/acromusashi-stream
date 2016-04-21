@@ -14,9 +14,10 @@ package acromusashi.stream.hook;
 
 import java.util.Map;
 
-import backtype.storm.hooks.BaseTaskHook;
-import backtype.storm.hooks.info.EmitInfo;
-import backtype.storm.task.TopologyContext;
+import org.apache.storm.hooks.BaseTaskHook;
+import org.apache.storm.hooks.info.EmitInfo;
+import org.apache.storm.task.TopologyContext;
+
 
 /**
  * Storm Topology's Log Server hook.

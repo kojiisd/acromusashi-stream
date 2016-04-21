@@ -14,16 +14,16 @@ package acromusashi.stream.bolt;
 
 import java.util.Map;
 
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.tuple.Tuple;
+
 import acromusashi.stream.constants.FieldName;
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.OutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.base.BaseRichBolt;
-import backtype.storm.tuple.Tuple;
 
 /**
  * BaseBolt, this class has the following values ​​in the field, <br>
- * and auto extract {@link acromusashi.stream.entity.StreamMessage} from {@link backtype.storm.tuple.Tuple}.
  *
  * <ol>
  * <li>Storm configuration</li>

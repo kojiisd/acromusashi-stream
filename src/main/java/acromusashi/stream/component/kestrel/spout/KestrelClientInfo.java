@@ -12,7 +12,7 @@
 */
 package acromusashi.stream.component.kestrel.spout;
 
-import org.apache.thrift7.TException;
+import org.apache.storm.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

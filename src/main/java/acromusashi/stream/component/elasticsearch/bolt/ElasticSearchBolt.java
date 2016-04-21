@@ -15,6 +15,7 @@ package acromusashi.stream.component.elasticsearch.bolt;
 import java.text.MessageFormat;
 import java.util.Map;
 
+import org.apache.storm.task.TopologyContext;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import acromusashi.stream.bolt.AmBaseBolt;
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.TopologyContext;
 
 /**
  * ElasticSearchに対してクエリを投入するBolt

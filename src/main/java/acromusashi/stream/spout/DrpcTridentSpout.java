@@ -14,12 +14,11 @@ package acromusashi.stream.spout;
 
 import java.util.Map;
 
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.trident.spout.ITridentSpout;
+import org.apache.storm.tuple.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import storm.trident.spout.ITridentSpout;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.tuple.Fields;
 
 /**
  * DRPCリクエストを受信してTridentの処理を開始するSpout
@@ -62,7 +61,7 @@ public class DrpcTridentSpout<E extends DrpcTridentEmitter> implements ITridentS
      */
     @SuppressWarnings("rawtypes")
     @Override
-    public storm.trident.spout.ITridentSpout.BatchCoordinator<Object> getCoordinator(
+    public org.apache.storm.trident.spout.ITridentSpout.BatchCoordinator<Object> getCoordinator(
             String txStateId, Map conf, TopologyContext context)
     {
         return new DrpcTridentCoodinator();
@@ -73,8 +72,8 @@ public class DrpcTridentSpout<E extends DrpcTridentEmitter> implements ITridentS
      */
     @SuppressWarnings("rawtypes")
     @Override
-    public storm.trident.spout.ITridentSpout.Emitter<Object> getEmitter(String txStateId, Map conf,
-            TopologyContext context)
+    public org.apache.storm.trident.spout.ITridentSpout.Emitter<Object> getEmitter(
+            String txStateId, Map conf, TopologyContext context)
     {
         DrpcTridentEmitter emitter = null;
 

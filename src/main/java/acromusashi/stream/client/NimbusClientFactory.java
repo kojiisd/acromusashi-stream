@@ -14,8 +14,8 @@ package acromusashi.stream.client;
 
 import java.util.Map;
 
-import backtype.storm.Config;
-import backtype.storm.utils.NimbusClient;
+import org.apache.storm.Config;
+import org.apache.storm.utils.NimbusClient;
 
 import com.google.common.collect.Maps;
 

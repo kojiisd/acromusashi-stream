@@ -15,14 +15,16 @@ package acromusashi.stream.topology.state;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.storm.generated.AuthorizationException;
+import org.apache.storm.generated.ClusterSummary;
+import org.apache.storm.generated.Nimbus;
+import org.apache.storm.generated.NotAliveException;
+import org.apache.storm.generated.TopologyInfo;
+import org.apache.storm.thrift.TException;
+import org.apache.storm.utils.NimbusClient;
 
 import acromusashi.stream.client.NimbusClientFactory;
 import acromusashi.stream.exception.ConnectFailException;
-import backtype.storm.generated.ClusterSummary;
-import backtype.storm.generated.Nimbus;
-import backtype.storm.generated.NotAliveException;
-import backtype.storm.generated.TopologyInfo;
-import backtype.storm.utils.NimbusClient;
 
 /**
  * Nimbusに問合せ、該当Topologyの実行状態を取得するクライアントクラス<br>
@@ -65,7 +67,7 @@ public class TopologyExecutionGetter
         {
             clusterSummary = client.getClusterInfo();
         }
-        catch (org.apache.thrift7.TException ex)
+        catch (Exception ex)
         {
             throw new ConnectFailException(ex);
         }
@@ -92,7 +94,11 @@ public class TopologyExecutionGetter
             {
                 return TopologyExecutionStatus.NOT_ALIVED;
             }
-            catch (org.apache.thrift7.TException ex)
+            catch (AuthorizationException ex)
+            {
+                throw new ConnectFailException(ex);
+            }
+            catch (TException ex)
             {
                 throw new ConnectFailException(ex);
             }

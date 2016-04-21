@@ -20,11 +20,11 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.storm.Config;
+import org.apache.storm.shade.org.apache.commons.io.IOUtils;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
-import backtype.storm.Config;
 
 /**
  * Utility class for converting specified yaml file to Storm config object.

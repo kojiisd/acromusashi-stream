@@ -14,6 +14,10 @@ package acromusashi.stream.topology;
 
 import java.util.List;
 
+import org.apache.storm.Config;
+import org.apache.storm.tuple.Fields;
+
+import backtype.storm.scheme.StringScheme;
 import acromusashi.stream.bolt.StreamMessagePrintBolt;
 import acromusashi.stream.component.kestrel.spout.KestrelJsonSpout;
 import acromusashi.stream.config.StormConfigGenerator;
@@ -22,9 +26,7 @@ import acromusashi.stream.constants.FieldName;
 import acromusashi.stream.entity.MessageEntity;
 import acromusashi.stream.entity.StreamMessage;
 import acromusashi.stream.entity.StreamMessageHeader;
-import backtype.storm.Config;
-import backtype.storm.scheme.StringScheme;
-import backtype.storm.tuple.Fields;
+
 
 /**
  * Kestrelからのメッセージ取得用のTopologyを起動する。

@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import backtype.storm.Config;
+import org.apache.storm.Config;
+
 
 /**
  * Storm設定オブジェクトから値を取得するユーティリティクラス

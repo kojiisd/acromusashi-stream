@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.thrift7.TException;
+import org.apache.storm.Config;
+import org.apache.storm.drpc.DRPCInvocationsClient;
+import org.apache.storm.generated.DRPCRequest;
+import org.apache.storm.thrift.TException;
+import org.apache.storm.utils.Utils;
 
-import backtype.storm.Config;
-import backtype.storm.drpc.DRPCInvocationsClient;
-import backtype.storm.generated.DRPCRequest;
-import backtype.storm.utils.Utils;
 
 /**
  * DRPCリクエストをDRPCServerから受信し、Serverに即応答を返すヘルパークラス。<br>

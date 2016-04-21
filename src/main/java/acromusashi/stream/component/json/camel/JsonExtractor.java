@@ -21,7 +21,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.converter.stream.InputStreamCache;
-import org.apache.commons.io.IOUtils;
+import org.apache.storm.shade.org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
