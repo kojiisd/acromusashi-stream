@@ -21,8 +21,8 @@ import org.apache.storm.Config;
 import org.apache.storm.drpc.DRPCInvocationsClient;
 import org.apache.storm.generated.DRPCRequest;
 import org.apache.storm.thrift.TException;
+import org.apache.storm.thrift.transport.TTransportException;
 import org.apache.storm.utils.Utils;
-
 
 /**
  * DRPCリクエストをDRPCServerから受信し、Serverに即応答を返すヘルパークラス。<br>
@@ -52,9 +52,10 @@ public class DrpcFetchHelper
      * 
      * @param conf Stormの設定オブジェクト
      * @param func DRPC取得機能
+     * @throws TTransportException Transport failed.
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void initialize(Map conf, String func)
+    public void initialize(Map conf, String func) throws TTransportException
     {
         List<String> servers = (List<String>) conf.get(Config.DRPC_SERVERS);
         int port = Utils.getInt(conf.get(Config.DRPC_INVOCATIONS_PORT));
@@ -131,9 +132,11 @@ public class DrpcFetchHelper
      * @param host DRPCServerホスト
      * @param port DRPCServerInvocation用ポート
      * @return 生成クライアント
+     * @throws TTransportException Transport failed.
      */
     protected DRPCInvocationsClient createInvocationClient(String host, int port)
+            throws TTransportException
     {
-        return new DRPCInvocationsClient(host, port);
+        return new DRPCInvocationsClient(Utils.readStormConfig(), host, port);
     }
 }

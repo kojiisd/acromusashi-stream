@@ -20,13 +20,13 @@ import java.util.concurrent.TimeUnit;
 import org.apache.storm.Config;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.thrift.TException;
+import org.apache.storm.thrift.transport.TTransportException;
 import org.apache.storm.trident.operation.TridentCollector;
 import org.apache.storm.trident.spout.ITridentSpout.Emitter;
 import org.apache.storm.trident.topology.TransactionAttempt;
 import org.apache.storm.utils.RotatingMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * DRPCリクエストを受信してTridentの処理を開始するSpout用のEmitterクラス
@@ -36,7 +36,8 @@ import org.slf4j.LoggerFactory;
 public abstract class DrpcTridentEmitter implements Emitter<Object>
 {
     /** ロガー */
-    private static final Logger                                logger      = LoggerFactory.getLogger(DrpcTridentEmitter.class);
+    private static final Logger                                logger      = LoggerFactory.getLogger(
+            DrpcTridentEmitter.class);
 
     /** ローテートマップのサイズ。タイムアウト秒経過毎に現状の内容がシフトされるため、サイズは3にして最後のマップにシフトしたらタイムアウトして扱う */
     private static final int                                   ROTATE_SIZE = 3;
@@ -86,7 +87,8 @@ public abstract class DrpcTridentEmitter implements Emitter<Object>
         this.stormConf = conf;
         this.function = function;
         this.idsMap = new RotatingMap<TransactionAttempt, DrpcRequestInfo>(ROTATE_SIZE);
-        this.rotateTime = TimeUnit.SECONDS.toMillis(((Number) conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)).intValue());
+        this.rotateTime = TimeUnit.SECONDS.toMillis(
+                ((Number) conf.get(Config.TOPOLOGY_MESSAGE_TIMEOUT_SECS)).intValue());
         this.lastRotate = getCurrentTime();
     }
 
@@ -127,7 +129,15 @@ public abstract class DrpcTridentEmitter implements Emitter<Object>
         {
             prepare(this.stormConf, this.context);
             this.fetchHelper = createFetchHelper();
-            this.fetchHelper.initialize(this.stormConf, this.function);
+            try
+            {
+                this.fetchHelper.initialize(this.stormConf, this.function);
+            }
+            catch (TTransportException ttex)
+            {
+                logger.warn("DRPC initialize failed.", ttex);
+                return;
+            }
             this.prepared = true;
         }
 

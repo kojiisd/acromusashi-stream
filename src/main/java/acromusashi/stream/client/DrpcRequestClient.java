@@ -20,7 +20,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.storm.thrift.transport.TTransportException;
 import org.apache.storm.utils.DRPCClient;
+import org.apache.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -163,10 +165,11 @@ public class DrpcRequestClient
      * @param port DRPCServerポート
      * @param timeout DRPCタイムアウト(ミリ秒単位)
      * @return DRPCClient
+     * @throws TTransportException Transport failed.
      */
-    protected DRPCClient createClient(String host, int port, int timeout)
+    protected DRPCClient createClient(String host, int port, int timeout) throws TTransportException
     {
-        return new DRPCClient(host, port, timeout);
+        return new DRPCClient(Utils.readStormConfig(), host, port, timeout);
     }
 
     /**

@@ -12,24 +12,17 @@
 */
 package acromusashi.stream.component.cassandra.bolt;
 
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.storm.cassandra.bolt.CassandraWriterBolt;
+import org.apache.storm.cassandra.query.CQLStatementTupleMapper;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.tuple.Tuple;
-import org.elasticsearch.common.recycler.Recycler.V;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import clojure.lang.Compiler.C;
-
-import com.hmsonline.storm.cassandra.bolt.CassandraBolt;
-import com.hmsonline.storm.cassandra.bolt.mapper.TupleMapper;
-import com.hmsonline.storm.cassandra.client.AstyanaxClient;
 import com.netflix.astyanax.connectionpool.ConnectionPoolConfiguration;
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
 
@@ -43,13 +36,14 @@ import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
  * @param <C> カラム名の型
  * @param <V> カラム値の型
  */
-public class CassandraStoreBolt<K, C, V> extends CassandraBolt<K, C, V> implements IRichBolt
+public class CassandraStoreBolt<K, C, V> extends CassandraWriterBolt
 {
     /** serialVersionUID */
     private static final long           serialVersionUID = -1151860639847216951L;
 
     /** logger */
-    private static final Logger         logger           = LoggerFactory.getLogger(CassandraStoreBolt.class);
+    private static final Logger         logger           = LoggerFactory.getLogger(
+            CassandraStoreBolt.class);
 
     /** OutputCollector */
     protected transient OutputCollector collector;
@@ -63,9 +57,9 @@ public class CassandraStoreBolt<K, C, V> extends CassandraBolt<K, C, V> implemen
      * @param clientConfigKey 設定値キー
      * @param tupleMapper Cassandraへのマッピング定義
      */
-    public CassandraStoreBolt(String clientConfigKey, TupleMapper<K, C, V> tupleMapper)
+    public CassandraStoreBolt(String clientConfigKey, CQLStatementTupleMapper tupleMapper)
     {
-        super(clientConfigKey, tupleMapper);
+        super(tupleMapper);
         this.clientConfigKey = clientConfigKey;
     }
 
@@ -79,7 +73,8 @@ public class CassandraStoreBolt<K, C, V> extends CassandraBolt<K, C, V> implemen
         Map targetConfig = stormConf;
         // prepareメソッドで渡されるConfig、及び内部のMapはClojureが生成するMapのためイミュータブルなMapとなっている。
         // そのため、新たなMapを生成し、コピーして使用している。
-        Map<String, Object> baseConfig = (Map<String, Object>) targetConfig.get(this.clientConfigKey);
+        Map<String, Object> baseConfig = (Map<String, Object>) targetConfig.get(
+                this.clientConfigKey);
         // Cassandraのタイムアウト値が設定されている場合はCassandraの接続設定を生成し、親クラスに渡す。
         if (baseConfig.containsKey("cassandra.connection.timeout") == true)
         {
@@ -87,36 +82,17 @@ public class CassandraStoreBolt<K, C, V> extends CassandraBolt<K, C, V> implemen
             targetConfig.putAll(stormConf);
             Map<String, Object> cassandraConfig = new HashMap<String, Object>();
             cassandraConfig.putAll(baseConfig);
-            int connectionTimeout = Integer.parseInt(baseConfig.get("cassandra.connection.timeout").toString());
+            int connectionTimeout = Integer.parseInt(
+                    baseConfig.get("cassandra.connection.timeout").toString());
             ConnectionPoolConfiguration poolConf = new ConnectionPoolConfigurationImpl(
-                    "MyConnectionPool").setConnectTimeout(connectionTimeout).setMaxTimeoutWhenExhausted(
-                    connectionTimeout);
+                    "MyConnectionPool").setConnectTimeout(
+                            connectionTimeout).setMaxTimeoutWhenExhausted(connectionTimeout);
             cassandraConfig.put(AstyanaxClient.ASTYANAX_CONNECTION_POOL_CONFIGURATION, poolConf);
             targetConfig.put(this.clientConfigKey, cassandraConfig);
         }
 
         super.prepare(targetConfig, context);
         this.collector = collector;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void execute(Tuple input)
-    {
-        try
-        {
-            super.writeTuple(input, this.tupleMapper);
-        }
-        catch (Exception ex)
-        {
-            String messageFormat = "Tuple write failed. InputTuple={0}";
-            String errorMessage = MessageFormat.format(messageFormat, input.toString());
-            logger.warn(errorMessage, ex);
-        }
-
-        getCollector().ack(input);
     }
 
     /**

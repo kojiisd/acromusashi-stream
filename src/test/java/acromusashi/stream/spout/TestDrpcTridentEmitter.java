@@ -14,8 +14,8 @@ package acromusashi.stream.spout;
 
 import java.util.Map;
 
-import storm.trident.operation.TridentCollector;
-import backtype.storm.task.TopologyContext;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.trident.operation.TridentCollector;
 
 /**
  * DrpcTridentEmitterテスト用の拡張クラス

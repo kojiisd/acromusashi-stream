@@ -14,8 +14,8 @@ package acromusashi.stream.spout;
 
 import java.util.List;
 
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.tuple.Fields;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
 
 /**
  * 指定したフィールド指定を保持するStorm-UnitTest用Spout
