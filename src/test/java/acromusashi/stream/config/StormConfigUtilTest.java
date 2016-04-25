@@ -19,10 +19,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.storm.Config;
 import org.junit.Test;
 
 import acromusashi.stream.util.ResourceResolver;
-import backtype.storm.Config;
 
 /**
  * StormConfigUtilのテストクラス
@@ -43,7 +43,8 @@ public class StormConfigUtilTest
     public void testGetStringValue_String値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         String actual = StormConfigUtil.getStringValue(conf, "CassandraSpout.field", "");
@@ -64,7 +65,8 @@ public class StormConfigUtilTest
     public void testGetStringValue_String値未存在時デフォルト値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
         // 実施
         String actual = StormConfigUtil.getStringValue(conf, "CassandraSpout.NotFound", "default");
 
@@ -84,7 +86,8 @@ public class StormConfigUtilTest
     public void testGetIntValue_Int値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         int actual = StormConfigUtil.getIntValue(conf, "topology.workers", 10);
@@ -105,7 +108,8 @@ public class StormConfigUtilTest
     public void testGetIntValue_Int値未存在時デフォルト値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         int actual = StormConfigUtil.getIntValue(conf, "topology.workers.NotFound", 10);
@@ -126,7 +130,8 @@ public class StormConfigUtilTest
     public void testGetStringListValue_List値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         List<String> actual = StormConfigUtil.getStringListValue(conf, "casa.word");
@@ -150,7 +155,8 @@ public class StormConfigUtilTest
     public void testGetStringListValue_List値未存在時デフォルト値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         List<String> actual = StormConfigUtil.getStringListValue(conf, "casa.word.NotFound");
@@ -172,7 +178,8 @@ public class StormConfigUtilTest
     public void testGetStringMapValue_Map値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         Map actual = StormConfigUtil.getMapValue(conf, "casa");
@@ -197,7 +204,8 @@ public class StormConfigUtilTest
     public void testGetStringListValue_Map値未存在時デフォルト値取得確認() throws IOException
     {
         // 準備
-        Config conf = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
+        Config conf = StormConfigGenerator.loadStormConfig(
+                ResourceResolver.resolve("StormConfigUtilTest_FileReadConfirm.yaml"));
 
         // 実施
         Map actual = StormConfigUtil.getMapValue(conf, "casa.NotFound");

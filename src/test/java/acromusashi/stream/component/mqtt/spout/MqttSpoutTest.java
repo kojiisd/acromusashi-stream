@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.storm.spout.SpoutOutputCollector;
 import org.elasticsearch.common.collect.Lists;
 import org.elasticsearch.common.collect.Maps;
 import org.fusesource.mqtt.client.BlockingConnection;
@@ -23,8 +24,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import backtype.storm.spout.SpoutOutputCollector;
 
 /**
  * MqttSpoutのテストクラス
@@ -143,7 +142,8 @@ public class MqttSpoutTest
 
         List tuple = tupleCaptor.getValue();
         assertThat(tuple.get(0).toString(), is("TestTopic"));
-        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(1);
+        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(
+                1);
         assertThat(message.getHeader().getMessageKey(), is("TestTopic"));
         assertThat(message.getBody().toString(), is("TestMessage"));
     }
@@ -176,7 +176,8 @@ public class MqttSpoutTest
 
         List tuple = tupleCaptor.getValue();
         assertThat(tuple.get(0).toString(), is("TestTopic"));
-        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(1);
+        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(
+                1);
         assertThat(message.getHeader().getMessageKey(), is("TestTopic"));
         assertThat(message.getBody().toString(), is("TestMessage"));
     }
@@ -209,7 +210,8 @@ public class MqttSpoutTest
 
         List tuple = tupleCaptor.getValue();
         assertThat(tuple.get(0).toString(), is("TestTopic"));
-        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(1);
+        acromusashi.stream.entity.StreamMessage message = (acromusashi.stream.entity.StreamMessage) tuple.get(
+                1);
         assertThat(message.getHeader().getMessageKey(), is("TestTopic"));
         assertThat(message.getBody().toString(), is("TestMessage"));
 

@@ -20,8 +20,6 @@ import org.apache.storm.cassandra.query.CQLStatementTupleMapper;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.netflix.astyanax.connectionpool.ConnectionPoolConfiguration;
 import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
@@ -30,7 +28,7 @@ import com.netflix.astyanax.connectionpool.impl.ConnectionPoolConfigurationImpl;
  * Cassandraに受信Tupleを書き込むBolt<br>
  * 受信したTupleをCassandraに書き込むのみで、下流への送信は行わない。
  * 
- * @author kimura
+ * @author acroquest
  *
  * @param <K> RowKeyの型
  * @param <C> カラム名の型
@@ -40,10 +38,6 @@ public class CassandraStoreBolt<K, C, V> extends CassandraWriterBolt
 {
     /** serialVersionUID */
     private static final long           serialVersionUID = -1151860639847216951L;
-
-    /** logger */
-    private static final Logger         logger           = LoggerFactory.getLogger(
-            CassandraStoreBolt.class);
 
     /** OutputCollector */
     protected transient OutputCollector collector;
@@ -87,11 +81,12 @@ public class CassandraStoreBolt<K, C, V> extends CassandraWriterBolt
             ConnectionPoolConfiguration poolConf = new ConnectionPoolConfigurationImpl(
                     "MyConnectionPool").setConnectTimeout(
                             connectionTimeout).setMaxTimeoutWhenExhausted(connectionTimeout);
-            cassandraConfig.put(AstyanaxClient.ASTYANAX_CONNECTION_POOL_CONFIGURATION, poolConf);
+            // TODO AstyanaxClient.ASTYANAX_CONNECTION_POOL_CONFIGURATIONの代わりに最新版で使える定義を持ってくる必要有。
+            cassandraConfig.put("astyanax.connectionPoolConfiguration", poolConf);
             targetConfig.put(this.clientConfigKey, cassandraConfig);
         }
 
-        super.prepare(targetConfig, context);
+        super.prepare(targetConfig, context, collector);
         this.collector = collector;
     }
 

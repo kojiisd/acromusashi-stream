@@ -18,15 +18,16 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 
-import org.apache.thrift7.TException;
+import org.apache.storm.generated.DRPCExecutionException;
+import org.apache.storm.thrift.TException;
+import org.apache.storm.thrift.transport.TTransportException;
+import org.apache.storm.utils.DRPCClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import backtype.storm.generated.DRPCExecutionException;
-import backtype.storm.utils.DRPCClient;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -172,6 +173,7 @@ public class DrpcRequestClientTest
 
     /**
      * 接続失敗した場合に接続失敗した旨のログが出力されることを確認する。
+     * @throws TTransportException 
      * 
      * @target {@link DrpcRequestClient#startSendRequest(String...)}
      * @test 接続失敗した旨のログが出力されること
@@ -180,10 +182,11 @@ public class DrpcRequestClientTest
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testSendRequest_接続失敗()
+    public void testSendRequest_接続失敗() throws TTransportException
     {
         // 準備
-        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
+                ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         Appender<ILoggingEvent> mockAppender = Mockito.mock(Appender.class);
         Mockito.when(mockAppender.getName()).thenReturn("MOCK");
         root.addAppender(mockAppender);
@@ -218,14 +221,16 @@ public class DrpcRequestClientTest
     public void testSendRequest_送信失敗() throws TException, DRPCExecutionException
     {
         // 準備
-        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
+                ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         Appender<ILoggingEvent> mockAppender = Mockito.mock(Appender.class);
         Mockito.when(mockAppender.getName()).thenReturn("MOCK");
         root.addAppender(mockAppender);
 
         DrpcRequestClient spiedTarget = Mockito.spy(this.target);
         DRPCClient clientMock = Mockito.mock(DRPCClient.class);
-        Mockito.doReturn(clientMock).when(spiedTarget).createClient(anyString(), anyInt(), anyInt());
+        Mockito.doReturn(clientMock).when(spiedTarget).createClient(anyString(), anyInt(),
+                anyInt());
         Mockito.doThrow(new TException()).when(clientMock).execute(anyString(), anyString());
 
         // 実施
@@ -254,14 +259,16 @@ public class DrpcRequestClientTest
     public void testSendRequest_送信成功() throws TException, DRPCExecutionException
     {
         // 準備
-        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger(
+                ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
         Appender<ILoggingEvent> mockAppender = Mockito.mock(Appender.class);
         Mockito.when(mockAppender.getName()).thenReturn("MOCK");
         root.addAppender(mockAppender);
 
         DrpcRequestClient spiedTarget = Mockito.spy(this.target);
         DRPCClient clientMock = Mockito.mock(DRPCClient.class);
-        Mockito.doReturn(clientMock).when(spiedTarget).createClient(anyString(), anyInt(), anyInt());
+        Mockito.doReturn(clientMock).when(spiedTarget).createClient(anyString(), anyInt(),
+                anyInt());
         Mockito.doReturn("Succeed").when(clientMock).execute(anyString(), anyString());
 
         // 実施

@@ -3,6 +3,7 @@ package acromusashi.stream.component.infinispan.bolt;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 
+import org.apache.storm.task.OutputCollector;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.exceptions.HotRodClientException;
 import org.junit.Before;
@@ -18,7 +19,6 @@ import acromusashi.stream.component.infinispan.SimpleCacheMapper;
 import acromusashi.stream.component.infinispan.TupleCacheMapper;
 import acromusashi.stream.constants.FieldName;
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.OutputCollector;
 
 /**
  * InfinispanStoreBoltのテストクラス

@@ -23,14 +23,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.thrift7.TException;
+import org.apache.storm.Config;
+import org.apache.storm.drpc.DRPCInvocationsClient;
+import org.apache.storm.generated.AuthorizationException;
+import org.apache.storm.generated.DRPCRequest;
+import org.apache.storm.thrift.transport.TTransportException;
+import org.apache.thrift.TException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import backtype.storm.Config;
-import backtype.storm.drpc.DRPCInvocationsClient;
-import backtype.storm.generated.DRPCRequest;
 
 /**
  * DrpcFetchHelperのテストクラス
@@ -53,6 +54,7 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServer設定値が1個の状態でDRPCInvocationClientが1個生成されることを確認する。
+     * @throws TTransportException 
      * 
      * @target {@link DrpcFetchHelper#initialize(java.util.Map, String)}
      * @test DRPCInvocationClientが1個生成されること
@@ -60,7 +62,7 @@ public class DrpcFetchHelperTest
      *    result:: DRPCInvocationClientが1個生成されること
      */
     @Test
-    public void testInitialize_DRPCServer設定1個()
+    public void testInitialize_DRPCServer設定1個() throws TTransportException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -71,7 +73,8 @@ public class DrpcFetchHelperTest
 
         DrpcFetchHelper spiedTarget = Mockito.spy(this.target);
         DRPCInvocationsClient clientMock = Mockito.mock(DRPCInvocationsClient.class);
-        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(), anyInt());
+        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(),
+                anyInt());
 
         // 実施
         spiedTarget.initialize(config, "function");
@@ -82,6 +85,7 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServer設定値が2個の状態でDRPCInvocationClientが2個生成されることを確認する。
+     * @throws TTransportException 
      * 
      * @target {@link DrpcFetchHelper#initialize(java.util.Map, String)}
      * @test DRPCInvocationClientが2個生成されること
@@ -89,7 +93,7 @@ public class DrpcFetchHelperTest
      *    result:: DRPCInvocationClientが2個生成されること
      */
     @Test
-    public void testInitialize_DRPCServer設定2個()
+    public void testInitialize_DRPCServer設定2個() throws TTransportException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -101,7 +105,8 @@ public class DrpcFetchHelperTest
 
         DrpcFetchHelper spiedTarget = Mockito.spy(this.target);
         DRPCInvocationsClient clientMock = Mockito.mock(DRPCInvocationsClient.class);
-        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(), anyInt());
+        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(),
+                anyInt());
 
         // 実施
         spiedTarget.initialize(config, "function");
@@ -112,14 +117,16 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServerリクエストが存在しない状態でリクエストが受信されないことを確認する。
-     * 
+     * @throws org.apache.storm.thrift.TException 
+     * @throws AuthorizationException 
      * @target {@link DrpcFetchHelper#fetch()}
      * @test リクエストが受信されないこと
      *    condition:: DRPCServerリクエストが存在しない状態でfetchメソッドを実行
      *    result:: リクエストが受信されないこと
      */
     @Test
-    public void testFetch_リクエスト未存在() throws TException
+    public void testFetch_リクエスト未存在()
+            throws TException, AuthorizationException, org.apache.storm.thrift.TException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -132,7 +139,8 @@ public class DrpcFetchHelperTest
         DRPCInvocationsClient clientMock = Mockito.mock(DRPCInvocationsClient.class);
         DRPCRequest blankRequest = new DRPCRequest("", "");
         Mockito.doReturn(blankRequest).when(clientMock).fetchRequest(anyString());
-        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(), anyInt());
+        Mockito.doReturn(clientMock).when(spiedTarget).createInvocationClient(anyString(),
+                anyInt());
 
         // Helperの初期化
         spiedTarget.initialize(config, "function");
@@ -147,6 +155,8 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServerリクエストが2クライアント目に存在する状態でリクエストが受信されることを確認する。
+     * @throws org.apache.storm.thrift.TException 
+     * @throws AuthorizationException 
      * 
      * @target {@link DrpcFetchHelper#fetch()}
      * @test リクエストが受信されること
@@ -154,7 +164,8 @@ public class DrpcFetchHelperTest
      *    result:: リクエストが受信されること
      */
     @Test
-    public void testFetch_リクエスト存在_2クライアント目() throws TException
+    public void testFetch_リクエスト存在_2クライアント目()
+            throws TException, AuthorizationException, org.apache.storm.thrift.TException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -192,14 +203,16 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServerリクエストが1クライアント目に存在する状態でリクエストが受信されることを確認する。
-     * 
+     * @throws org.apache.storm.thrift.TException 
+     * @throws AuthorizationException 
      * @target {@link DrpcFetchHelper#fetch()}
      * @test リクエストが受信されること
      *    condition:: DRPCServerリクエストが1クライアント目に存在する状態でfetchメソッドを実行
      *    result:: リクエストが受信されること
      */
     @Test
-    public void testFetch_リクエスト存在_1クライアント目() throws TException
+    public void testFetch_リクエスト存在_1クライアント目()
+            throws TException, AuthorizationException, org.apache.storm.thrift.TException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -231,6 +244,8 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServerリクエストに対してAckを実行した場合にClientに対してAckが通知されることを確認する。
+     * @throws org.apache.storm.thrift.TException 
+     * @throws AuthorizationException 
      * 
      * @target {@link DrpcFetchHelper#ack(String, String)}
      * @test Clientに対してAckが通知されること
@@ -238,7 +253,8 @@ public class DrpcFetchHelperTest
      *    result:: Clientに対してAckが通知されること
      */
     @Test
-    public void testAck_Ack返信() throws TException
+    public void testAck_Ack返信()
+            throws TException, AuthorizationException, org.apache.storm.thrift.TException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();
@@ -267,14 +283,16 @@ public class DrpcFetchHelperTest
 
     /**
      * DRPCServerリクエストに対してFailを実行した場合にClientに対してFailが通知されることを確認する。
-     * 
+     * @throws org.apache.storm.thrift.TException 
+     * @throws AuthorizationException 
      * @target {@link DrpcFetchHelper#fail(String)}
      * @test Clientに対してFailが通知されること
      *    condition:: DRPCServerリクエスト受信後、Failメソッドを実行
      *    result:: Clientに対してFailが通知されること
      */
     @Test
-    public void testFail_Fail返信() throws TException
+    public void testFail_Fail返信()
+            throws TException, AuthorizationException, org.apache.storm.thrift.TException
     {
         // 準備
         Map<String, Object> config = new HashMap<String, Object>();

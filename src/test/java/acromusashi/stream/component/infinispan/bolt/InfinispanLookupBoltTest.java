@@ -8,6 +8,8 @@ import static org.mockito.Matchers.anyString;
 
 import java.util.List;
 
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.tuple.Tuple;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.exceptions.HotRodClientException;
 import org.junit.Before;
@@ -24,8 +26,6 @@ import acromusashi.stream.component.infinispan.SimpleCacheMapper;
 import acromusashi.stream.component.infinispan.TupleCacheMapper;
 import acromusashi.stream.constants.FieldName;
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.OutputCollector;
-import backtype.storm.tuple.Tuple;
 
 /**
  * InfinispanLookupBoltのテストクラス

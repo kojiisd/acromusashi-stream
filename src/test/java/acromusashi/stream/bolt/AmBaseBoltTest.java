@@ -26,6 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,14 +40,9 @@ import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.OutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.tuple.Fields;
-import backtype.storm.tuple.Tuple;
-
 import com.google.common.collect.Lists;
+
+import acromusashi.stream.entity.StreamMessage;
 
 /**
  * AmBaseBoltクラスのテストクラス<br>
@@ -200,7 +200,8 @@ public class AmBaseBoltTest
         targetBolt.setFields(Arrays.asList("Key", "Message"));
         targetBolt.prepare(this.mockConfMap, this.mockContext, this.mockCollector);
         AmBaseThroughBolt mockedBolt = Mockito.spy(targetBolt);
-        Mockito.doThrow(new RuntimeException()).when(mockedBolt).onExecute(any(StreamMessage.class));
+        Mockito.doThrow(new RuntimeException()).when(mockedBolt).onExecute(
+                any(StreamMessage.class));
 
         Tuple mockTuple = Mockito.mock(Tuple.class);
         Mockito.doReturn("Key").when(mockTuple).getValueByField("Key");

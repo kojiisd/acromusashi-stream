@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.task.TopologyContext;
+import org.apache.storm.task.TopologyContext;
 
 /**
  * 受信したTupleに対して指定したフィールドを抽出して下流に流すStorm-UnitTest用Bolt<br>

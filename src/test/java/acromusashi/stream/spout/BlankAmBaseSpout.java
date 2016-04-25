@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import backtype.storm.task.TopologyContext;
+import org.apache.storm.task.TopologyContext;
 
 /**
  * KeyTraceBaseSpout検証用のモッククラス

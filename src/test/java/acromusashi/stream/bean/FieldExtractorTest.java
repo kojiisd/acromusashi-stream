@@ -6,8 +6,9 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Map;
 
-import org.apache.storm.guava.collect.Maps;
 import org.junit.Test;
+
+import com.google.common.collect.Maps;
 
 import acromusashi.stream.entity.StreamMessage;
 import acromusashi.stream.entity.StreamMessageHeader;

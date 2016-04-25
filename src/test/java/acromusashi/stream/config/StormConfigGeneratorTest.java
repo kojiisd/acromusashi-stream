@@ -16,10 +16,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.apache.storm.Config;
 import org.junit.Test;
 
 import acromusashi.stream.util.ResourceResolver;
-import backtype.storm.Config;
 
 /**
  * StormConfigGeneratorのテストクラス
@@ -40,7 +40,8 @@ public class StormConfigGeneratorTest
     public void testLoadStormConfig_読込成功() throws IOException
     {
         // 実施
-        Config actual = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve("StormConfigGeneratorTest_testLoadStormConfig_ReadSuccess.yaml"));
+        Config actual = StormConfigGenerator.loadStormConfig(ResourceResolver.resolve(
+                "StormConfigGeneratorTest_testLoadStormConfig_ReadSuccess.yaml"));
 
         // 検証
         assertEquals("192.168.100.100", actual.get("nimbus.host"));
@@ -60,6 +61,7 @@ public class StormConfigGeneratorTest
     public void testLoadStormConfig_ファイル未存在() throws IOException
     {
         // 実施
-        StormConfigGenerator.loadStormConfig("StormConfigGeneratorTest_testLoadStormConfig_NotFound.yaml");
+        StormConfigGenerator.loadStormConfig(
+                "StormConfigGeneratorTest_testLoadStormConfig_NotFound.yaml");
     }
 }

@@ -22,6 +22,10 @@ import static org.mockito.Matchers.eq;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.tuple.Fields;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,10 +35,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import acromusashi.stream.entity.StreamMessage;
-import backtype.storm.spout.SpoutOutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.tuple.Fields;
 
 /**
  * KeyTraceBaseSpoutクラスのテストクラス<br>
@@ -97,7 +97,7 @@ public class AmBaseSpoutTest
     /**
      * DeclareOutputFieldsメソッド呼び出し時のフィールド確認を行う。
      *
-     * @target {@link AmBaseSpout#declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer)}
+     * @target {@link AmBaseSpout#declareOutputFields(org.apache.storm.topology.OutputFieldsDeclarer)}
      * @test メッセージキー、メッセージ値を指定して {@link OutputFieldsDeclarer#declare(Fields fields)}を呼び出していることを確認する。<br>
      *    condition:: declareOutputFieldsメソッド実行<br>
      *    result:: メッセージキー、メッセージ値を指定して {@link OutputFieldsDeclarer#declare(Fields fields)}を呼び出していること
